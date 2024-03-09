@@ -119,36 +119,42 @@ def stacked_plot(df, filename=None):
         plt.savefig(filename, dpi=300)
 
 
+import plotly.graph_objs as go
+
 def pc1_line_plot(pc1):
     """
-    Single plot with range slider and selectors
+    Creates a line plot for the first principal component (PC1) with
+    an interactive range slider and pre-defined range selector buttons.
+    The line color is set to red.
     """
-    # fig = px.line(pc1, title="Principal Component 1")
-    # fig.show()
+    # Create a Scatter trace for the plot with the line color set to red
+    trace = go.Scatter(
+        x=pc1.index, 
+        y=pc1, 
+        name="PC1",
+        line=dict(color='red')  # Set line color to red
+    )
 
-    trace = go.Scatter(x=pc1.index, y=pc1, name="PC1")
-
-    data = [trace]
+    # Define the layout of the plot
     layout = dict(
         title="First Principal Component (PC1)",
         xaxis=dict(
             rangeselector=dict(
-                buttons=list(
-                    [
-                        dict(count=1, label="1m", step="month", stepmode="backward"),
-                        dict(count=6, label="6m", step="month", stepmode="backward"),
-                        dict(count=1, label="YTD", step="year", stepmode="todate"),
-                        dict(count=1, label="1y", step="year", stepmode="backward"),
-                        dict(step="all"),
-                    ]
-                )
+                buttons=list([
+                    dict(count=1, label="1m", step="month", stepmode="backward"),
+                    dict(count=6, label="6m", step="month", stepmode="backward"),
+                    dict(count=1, label="YTD", step="year", stepmode="todate"),
+                    dict(count=1, label="1y", step="year", stepmode="backward"),
+                    dict(step="all"),
+                ])
             ),
             rangeslider=dict(visible=True),
             type="date",
         ),
     )
 
-    fig = go.FigureWidget(data=data, layout=layout)
+    # Create the figure with data and layout, and display it
+    fig = go.FigureWidget(data=[trace], layout=layout)
     fig.show()
 
 
